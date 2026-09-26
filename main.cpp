@@ -3,6 +3,9 @@
 #include <string>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
 
 #ifdef _WIN32
 
@@ -343,7 +346,6 @@ void sendFile(
     string fileName
 )
 {
-    // Binary mode is required for PNG images
     ifstream file(
         fileName,
         ios::binary
@@ -360,7 +362,6 @@ void sendFile(
         return;
     }
 
-    // Get file size
     file.seekg(0, ios::end);
 
     streamsize fileSize =
@@ -368,7 +369,6 @@ void sendFile(
 
     file.seekg(0, ios::beg);
 
-    // Read complete file
     string content(
         static_cast<size_t>(fileSize),
         '\0'
@@ -430,7 +430,6 @@ void sendFile(
         "\r\n";
 
 
-    // Send header
     send(
         clientSocket,
         response.c_str(),
@@ -466,6 +465,84 @@ void sendFile(
 
         totalSent += sent;
     }
+}
+
+
+// ==================================================
+//              GENERATE BOOKING ID
+// ==================================================
+
+string generateBookingID()
+{
+    time_t now = time(nullptr);
+
+    tm localTime{};
+
+#ifdef _WIN32
+    localtime_s(
+        &localTime,
+        &now
+    );
+#else
+    localtime_r(
+        &now,
+        &localTime
+    );
+#endif
+
+    ostringstream datePart;
+
+    datePart
+        << put_time(
+            &localTime,
+            "%Y%m%d"
+        );
+
+
+    int bookingNumber = 1;
+
+    ifstream bookingFile(
+        "bookings.txt"
+    );
+
+    if (bookingFile)
+    {
+        string line;
+
+        while (
+            getline(
+                bookingFile,
+                line
+            )
+        )
+        {
+            if (
+                line.find(
+                    "Booking ID:"
+                )
+                != string::npos
+            )
+            {
+                bookingNumber++;
+            }
+        }
+
+        bookingFile.close();
+    }
+
+
+    ostringstream bookingID;
+
+    bookingID
+        << "DG-"
+        << datePart.str()
+        << "-"
+        << setw(3)
+        << setfill('0')
+        << bookingNumber;
+
+
+    return bookingID.str();
 }
 
 
@@ -519,7 +596,9 @@ int main()
 
     if (environmentPort != nullptr)
     {
-        port = atoi(environmentPort);
+        port = atoi(
+            environmentPort
+        );
     }
 
 
@@ -558,7 +637,10 @@ int main()
             0
         );
 
-    if (serverSocket == INVALID_SOCKET)
+    if (
+        serverSocket ==
+        INVALID_SOCKET
+    )
     {
         cerr << "Socket creation failed."
              << endl;
@@ -581,7 +663,9 @@ int main()
         serverSocket,
         SOL_SOCKET,
         SO_REUSEADDR,
-        reinterpret_cast<char*>(&option),
+        reinterpret_cast<char*>(
+            &option
+        ),
         sizeof(option)
     );
 
@@ -619,7 +703,9 @@ int main()
         cerr << "Bind failed."
              << endl;
 
-        closeSocket(serverSocket);
+        closeSocket(
+            serverSocket
+        );
 
 #ifdef _WIN32
         WSACleanup();
@@ -643,7 +729,9 @@ int main()
         cerr << "Listen failed."
              << endl;
 
-        closeSocket(serverSocket);
+        closeSocket(
+            serverSocket
+        );
 
 #ifdef _WIN32
         WSACleanup();
@@ -681,7 +769,10 @@ int main()
                 nullptr
             );
 
-        if (clientSocket == INVALID_SOCKET)
+        if (
+            clientSocket ==
+            INVALID_SOCKET
+        )
         {
             continue;
         }
@@ -698,7 +789,10 @@ int main()
 
         if (request.empty())
         {
-            closeSocket(clientSocket);
+            closeSocket(
+                clientSocket
+            );
+
             continue;
         }
 
@@ -806,6 +900,14 @@ int main()
 
 
             // ==================================================
+            //              GENERATE BOOKING ID
+            // ==================================================
+
+            string bookingID =
+                generateBookingID();
+
+
+            // ==================================================
             //              CUSTOMER OBJECT
             // ==================================================
 
@@ -827,21 +929,24 @@ int main()
                 car.getName()
             )
             {
-                selectedVehicle = &car;
+                selectedVehicle =
+                    &car;
             }
             else if (
                 vehicleName ==
                 suv.getName()
             )
             {
-                selectedVehicle = &suv;
+                selectedVehicle =
+                    &suv;
             }
             else if (
                 vehicleName ==
                 bike.getName()
             )
             {
-                selectedVehicle = &bike;
+                selectedVehicle =
+                    &bike;
             }
 
 
@@ -850,7 +955,9 @@ int main()
             // ==================================================
 
             int rentalDays =
-                atoi(days.c_str());
+                atoi(
+                    days.c_str()
+                );
 
             if (rentalDays < 1)
             {
@@ -859,13 +966,16 @@ int main()
 
             double serverTotal = 0;
 
-            if (selectedVehicle != nullptr)
+            if (
+                selectedVehicle !=
+                nullptr
+            )
             {
                 serverTotal =
-                    selectedVehicle->
-                    calculateRent(
-                        rentalDays
-                    );
+                    selectedVehicle
+                        ->calculateRent(
+                            rentalDays
+                        );
             }
 
 
@@ -880,6 +990,11 @@ int main()
                  << endl;
 
             cout << "================================"
+                 << endl;
+
+
+            cout << "\nBooking ID: "
+                 << bookingID
                  << endl;
 
 
@@ -958,6 +1073,11 @@ int main()
                     << "========================================\n";
 
                 bookingFile
+                    << "Booking ID: "
+                    << bookingID
+                    << "\n";
+
+                bookingFile
                     << "Customer Name: "
                     << customerName
                     << "\n";
@@ -1031,10 +1151,24 @@ int main()
             cout << "================================"
                  << endl;
 
+            cout << "Booking ID: "
+                 << bookingID
+                 << endl;
+
+
+            // ==================================================
+            //              SEND RESPONSE TO WEBSITE
+            // ==================================================
+
+            string responseMessage =
+                "Booking received successfully by C++.\n"
+                "Booking ID: " +
+                bookingID;
+
 
             sendResponse(
                 clientSocket,
-                "Booking received successfully by C++."
+                responseMessage
             );
         }
 
@@ -1152,7 +1286,9 @@ int main()
         }
 
 
-        closeSocket(clientSocket);
+        closeSocket(
+            clientSocket
+        );
     }
 
 
@@ -1160,7 +1296,9 @@ int main()
     //              CLOSE SERVER
     // ==================================================
 
-    closeSocket(serverSocket);
+    closeSocket(
+        serverSocket
+    );
 
 #ifdef _WIN32
     WSACleanup();

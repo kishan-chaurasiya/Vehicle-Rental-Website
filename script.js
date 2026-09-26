@@ -400,6 +400,24 @@ document.addEventListener(
                 );
 
 
+                // ================= GET BOOKING ID =================
+
+                let bookingId =
+                    "Not Available";
+
+                let bookingIdMatch =
+                    data.match(
+                        /Booking ID:\s*([A-Z0-9-]+)/
+                    );
+
+                if (bookingIdMatch) {
+
+                    bookingId =
+                        bookingIdMatch[1];
+
+                }
+
+
                 // ================= SUCCESS MESSAGE =================
 
                 let totalResult =
@@ -420,6 +438,15 @@ document.addEventListener(
                             Your booking has been
                             successfully received.
                         </p>
+
+
+                        <p>
+                            Booking ID:
+                            <strong>
+                                ${bookingId}
+                            </strong>
+                        </p>
+
 
                         <p>
                             Customer:
