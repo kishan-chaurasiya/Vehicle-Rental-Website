@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DriveGo - Vehicle Rental</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            🚗 <span>Drive</span>Go
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#vehicles">Vehicles</a>
+            <a href="#why-us">Why Us</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <a href="#booking" class="nav-btn">Book Now</a>
+
+    </header>
+
+
+    <!-- ================= HERO SECTION ================= -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <p class="small-title">PREMIUM VEHICLE RENTAL SERVICE</p>
+
+            <h1>
+                Your Journey.<br>
+                <span>Your Vehicle.</span>
+            </h1>
+
+            <p class="hero-text">
+                Rent your perfect vehicle at affordable prices.
+                Easy booking, reliable vehicles and a smooth
+                rental experience.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#vehicles" class="primary-btn">
+                    Explore Vehicles
+                </a>
+
+                <a href="#booking" class="secondary-btn">
+                    Book a Vehicle
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SEARCH / BOOKING BOX ================= -->
+
+<section class="booking-section" id="booking">
+
+    <div class="booking-box">
+
+        <div class="booking-title">
+
+            <p>BOOK YOUR RIDE</p>
+
+            <h2>Find Your Perfect Vehicle</h2>
+
+        </div>
+
+
+        <div class="booking-form">
+
+            <div class="input-group">
+
+                <label>Pickup Location</label>
+
+                <input
+    type="text"
+    id="pickupLocation"
+    placeholder="Enter pickup location"
+>
+
+            </div>
+            <div class="input-group">
+    <label>Customer Name</label>
+    <input
+        type="text"
+        id="customerName"
+        placeholder="Enter your name"
+    >
+</div>
+
+<div class="input-group">
+    <label>Phone Number</label>
+    <input
+        type="text"
+        id="customerPhone"
+        placeholder="Enter phone number"
+    >
+</div>
+
+            <div class="input-group">
+
+                <label>Pickup Date</label>
+
+                <input type="date">
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Return Date</label>
+
+                <input type="date">
+
+            </div>
+
+
+            <button class="search-btn" type="button">
+                Search Vehicle
+            </button>
+
+        </div>
+
+
+        <!-- Vehicle results MUST be outside booking-form -->
+
+        <div id="vehicleResults"></div>
+
+    </div>
+
+</section>
+
+    <!-- ================= VEHICLES ================= -->
+
+    <section class="vehicles-section" id="vehicles">
+
+        <div class="section-heading">
+
+            <p>OUR VEHICLES</p>
+
+            <h2>Choose Your Perfect Ride</h2>
+
+            <span>
+                Select from our wide range of comfortable
+                and reliable vehicles.
+            </span>
+
+        </div>
+
+
+        <div class="vehicle-container">
+
+
+            <!-- VEHICLE 1 -->
+
+            <div class="vehicle-card">
+
+                <div class="vehicle-image car-one">
+                    🚗
+                </div>
+
+                <div class="vehicle-info">
+
+                    <div class="vehicle-name">
+
+                        <h3>Maruti Swift</h3>
+
+                        <span>Hatchback • 5 Seats • Petrol</span>
+
+                    </div>
+
+                    <p class="vehicle-description">
+                        Comfortable and economical car
+                        perfect for city trips.
+                    </p>
+
+                    <div class="vehicle-bottom">
+
+                        <div class="price">
+                            <strong>₹1,500</strong>
+                            <small>/ day</small>
+                        </div>
+
+                        <a href="#booking" class="book-btn">
+                            Book Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- VEHICLE 2 -->
+
+            <div class="vehicle-card">
+
+                <div class="vehicle-image car-two">
+                    🚙
+                </div>
+
+                <div class="vehicle-info">
+
+                    <div class="vehicle-name">
+
+                        <h3>Hyundai Creta</h3>
+
+                        <span>SUV • 5 Seats • Petrol</span>
+
+                    </div>
+
+                    <p class="vehicle-description">
+                        Spacious SUV with comfort and
+                        excellent driving experience.
+                    </p>
+
+                    <div class="vehicle-bottom">
+
+                        <div class="price">
+                            <strong>₹2,500</strong>
+                            <small>/ day</small>
+                        </div>
+
+                        <a href="#booking" class="book-btn">
+                            Book Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- VEHICLE 3 -->
+
+            <div class="vehicle-card">
+
+                <div class="vehicle-image bike">
+                    🏍️
+                </div>
+
+                <div class="vehicle-info">
+
+                    <div class="vehicle-name">
+
+                        <h3>Royal Enfield</h3>
+
+                        <span>Motorcycle • 2 Seats • Petrol</span>
+
+                    </div>
+
+                    <p class="vehicle-description">
+                        Powerful and stylish motorcycle
+                        for your exciting journeys.
+                    </p>
+
+                    <div class="vehicle-bottom">
+
+                        <div class="price">
+                            <strong>₹800</strong>
+                            <small>/ day</small>
+                        </div>
+
+                        <a href="#booking" class="book-btn">
+                            Book Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= WHY CHOOSE US ================= -->
+
+    <section class="why-section" id="why-us">
+
+        <div class="section-heading">
+
+            <p>WHY DRIVEGO?</p>
+
+            <h2>Why Choose Us?</h2>
+
+            <span>
+                We make vehicle rental simple, convenient
+                and reliable.
+            </span>
+
+        </div>
+
+
+        <div class="features">
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🚗
+                </div>
+
+                <h3>Wide Range of Vehicles</h3>
+
+                <p>
+                    Choose from cars, SUVs and motorcycles
+                    according to your needs.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    💰
+                </div>
+
+                <h3>Affordable Prices</h3>
+
+                <p>
+                    Get reliable vehicles at transparent
+                    and affordable rental prices.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    ⚡
+                </div>
+
+                <h3>Easy Booking</h3>
+
+                <p>
+                    Book your vehicle quickly with our
+                    simple and convenient process.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    ⭐
+                </div>
+
+                <h3>Reliable Service</h3>
+
+                <p>
+                    We provide dependable vehicles and
+                    customer-focused rental services.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CALL TO ACTION ================= -->
+
+    <section class="cta">
+
+        <div>
+
+            <p>READY FOR YOUR NEXT JOURNEY?</p>
+
+            <h2>
+                Rent Your Vehicle Today
+            </h2>
+
+            <span>
+                Choose your vehicle and start your journey.
+            </span>
+
+        </div>
+
+        <a href="#booking" class="cta-btn">
+            Book Now
+        </a>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer id="contact">
+
+        <div class="footer-container">
+
+
+            <div class="footer-about">
+
+                <div class="logo footer-logo">
+                    🚗 <span>Drive</span>Go
+                </div>
+
+                <p>
+                    Your trusted vehicle rental partner.
+                    Comfortable rides, affordable prices
+                    and easy booking.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <h3>Quick Links</h3>
+
+                <a href="#home">Home</a>
+                <a href="#vehicles">Vehicles</a>
+                <a href="#why-us">Why Us</a>
+                <a href="#booking">Booking</a>
+
+            </div>
+
+
+            <div class="footer-contact">
+
+                <h3>Contact Us</h3>
+
+                <p>📍 Mumbai, India</p>
+                <p>📞 +91 9137741780</p>
+                <p>✉️ kishanchaurasiya413@gmail.com</p>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="copyright">
+
+            <p>
+                © 2026 DriveGo Vehicle Rental.
+                All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
