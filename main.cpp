@@ -256,8 +256,7 @@ string receiveRequest(socket_t clientSocket)
             if (contentLengthPosition != string::npos)
             {
                 size_t valueStart =
-                    contentLengthPosition +
-                    15;
+                    contentLengthPosition + 15;
 
                 size_t valueEnd =
                     request.find(
@@ -283,8 +282,10 @@ string receiveRequest(socket_t clientSocket)
             size_t bodySize =
                 request.size() - bodyStart;
 
-            if (bodySize >=
-                static_cast<size_t>(contentLength))
+            if (
+                bodySize >=
+                static_cast<size_t>(contentLength)
+            )
             {
                 break;
             }
@@ -325,7 +326,9 @@ void sendResponse(
     send(
         clientSocket,
         response.c_str(),
-        static_cast<int>(response.length()),
+        static_cast<int>(
+            response.length()
+        ),
         0
     );
 }
@@ -340,7 +343,11 @@ void sendFile(
     string fileName
 )
 {
-    ifstream file(fileName);
+    // Binary mode is required for PNG images
+    ifstream file(
+        fileName,
+        ios::binary
+    );
 
     if (!file)
     {
@@ -353,16 +360,34 @@ void sendFile(
         return;
     }
 
-    string content;
-    string line;
+    // Get file size
+    file.seekg(0, ios::end);
 
-    while (getline(file, line))
+    streamsize fileSize =
+        file.tellg();
+
+    file.seekg(0, ios::beg);
+
+    // Read complete file
+    string content(
+        static_cast<size_t>(fileSize),
+        '\0'
+    );
+
+    if (fileSize > 0)
     {
-        content += line;
-        content += "\n";
+        file.read(
+            &content[0],
+            fileSize
+        );
     }
 
     file.close();
+
+
+    // ==================================================
+    //              CONTENT TYPE
+    // ==================================================
 
     string contentType;
 
@@ -378,10 +403,20 @@ void sendFile(
     {
         contentType = "application/javascript";
     }
+    else if (fileName == "logo.png")
+    {
+        contentType = "image/png";
+    }
     else
     {
-        contentType = "text/plain";
+        contentType =
+            "application/octet-stream";
     }
+
+
+    // ==================================================
+    //                  HTTP HEADER
+    // ==================================================
 
     string response =
         "HTTP/1.1 200 OK\r\n"
@@ -389,18 +424,48 @@ void sendFile(
         contentType +
         "\r\n"
         "Content-Length: " +
-        to_string(content.length()) +
+        to_string(content.size()) +
         "\r\n"
         "Connection: close\r\n"
-        "\r\n" +
-        content;
+        "\r\n";
 
+
+    // Send header
     send(
         clientSocket,
         response.c_str(),
-        static_cast<int>(response.length()),
+        static_cast<int>(
+            response.length()
+        ),
         0
     );
+
+
+    // ==================================================
+    //              SEND FILE DATA
+    // ==================================================
+
+    size_t totalSent = 0;
+
+    while (totalSent < content.size())
+    {
+        int sent =
+            send(
+                clientSocket,
+                content.data() + totalSent,
+                static_cast<int>(
+                    content.size() - totalSent
+                ),
+                0
+            );
+
+        if (sent <= 0)
+        {
+            break;
+        }
+
+        totalSent += sent;
+    }
 }
 
 
@@ -466,10 +531,12 @@ int main()
 
     WSADATA wsa;
 
-    if (WSAStartup(
+    if (
+        WSAStartup(
             MAKEWORD(2, 2),
             &wsa
-        ) != 0)
+        ) != 0
+    )
     {
         cerr << "WSAStartup failed."
              << endl;
@@ -1022,6 +1089,24 @@ int main()
             sendFile(
                 clientSocket,
                 "script.js"
+            );
+        }
+
+
+        // ==================================================
+        //                  LOGO PNG
+        // ==================================================
+
+        else if (
+            request.find(
+                "GET /logo.png"
+            )
+            != string::npos
+        )
+        {
+            sendFile(
+                clientSocket,
+                "logo.png"
             );
         }
 

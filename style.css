@@ -923,3 +923,21 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+================= LOGO =================
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 150px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.footer-logo img {
+    width: 140px;
+    height: auto;
+}
