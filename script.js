@@ -64,16 +64,11 @@ searchBtn.addEventListener(
     "click",
     function () {
 
-        // Get customer information
-
         let name =
             customerName.value;
 
         let phone =
             customerPhone.value;
-
-
-        // Get booking information
 
         let location =
             pickupLocation.value;
@@ -133,8 +128,6 @@ searchBtn.addEventListener(
             difference /
             (1000 * 60 * 60 * 24);
 
-
-        // Same day = 1 day
 
         if (rentalDays === 0) {
 
@@ -246,6 +239,7 @@ document.addEventListener(
         ) {
 
             return;
+
         }
 
 
@@ -264,6 +258,7 @@ document.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -287,6 +282,7 @@ document.addEventListener(
                 returnDate.value
             );
 
+
         let difference =
             returnDay - pickup;
 
@@ -302,14 +298,14 @@ document.addEventListener(
         }
 
 
-        // Calculate total rent
+        // Calculate total
 
         let total =
             vehicle.price *
             rentalDays;
 
 
-        // ================= SEND COMPLETE BOOKING TO C++ =================
+        // ================= BOOKING DATA =================
 
         let bookingData =
             "name=" +
@@ -363,6 +359,8 @@ document.addEventListener(
             );
 
 
+        // ================= SEND TO C++ =================
+
         fetch(
             "/booking",
             {
@@ -376,13 +374,23 @@ document.addEventListener(
                 body: bookingData
             }
         )
+
         .then(
             function (response) {
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Booking request failed."
+                    );
+
+                }
 
                 return response.text();
 
             }
         )
+
         .then(
             function (data) {
 
@@ -391,8 +399,85 @@ document.addEventListener(
                     data
                 );
 
+
+                // ================= SUCCESS MESSAGE =================
+
+                let totalResult =
+                    document.getElementById(
+                        "totalResult"
+                    );
+
+
+                totalResult.innerHTML = `
+
+                    <div class="booking-success">
+
+                        <h3>
+                            Booking Confirmed!
+                        </h3>
+
+                        <p>
+                            Your booking has been
+                            successfully received.
+                        </p>
+
+                        <p>
+                            Customer:
+                            <strong>
+                                ${customerName.value}
+                            </strong>
+                        </p>
+
+                        <p>
+                            Phone:
+                            ${customerPhone.value}
+                        </p>
+
+                        <p>
+                            Location:
+                            ${pickupLocation.value}
+                        </p>
+
+                        <p>
+                            Vehicle:
+                            <strong>
+                                ${vehicle.name}
+                            </strong>
+                        </p>
+
+                        <p>
+                            Type:
+                            ${vehicle.type}
+                        </p>
+
+                        <p>
+                            Price:
+                            ₹${vehicle.price} / day
+                        </p>
+
+                        <p>
+                            Rental Days:
+                            ${rentalDays}
+                        </p>
+
+                        <h2>
+                            Total Rent:
+                            ₹${total}
+                        </h2>
+
+                        <p>
+                            <strong>
+                                Booking saved successfully!
+                            </strong>
+                        </p>
+
+                    </div>
+
+                `;
+
             }
         )
+
         .catch(
             function (error) {
 
@@ -401,69 +486,35 @@ document.addEventListener(
                     error
                 );
 
+
+                let totalResult =
+                    document.getElementById(
+                        "totalResult"
+                    );
+
+
+                totalResult.innerHTML = `
+
+                    <div class="booking-error">
+
+                        <h3>
+                            Booking Error
+                        </h3>
+
+                        <p>
+                            Unable to confirm the booking.
+                        </p>
+
+                        <p>
+                            Please try again.
+                        </p>
+
+                    </div>
+
+                `;
+
             }
         );
-
-
-        // ================= SHOW BOOKING SUMMARY =================
-
-        let totalResult =
-            document.getElementById(
-                "totalResult"
-            );
-
-
-        totalResult.innerHTML = `
-
-            <h3>
-                Booking Summary
-            </h3>
-
-            <p>
-                Customer:
-                <strong>
-                    ${customerName.value}
-                </strong>
-            </p>
-
-            <p>
-                Phone:
-                ${customerPhone.value}
-            </p>
-
-            <p>
-                Location:
-                ${pickupLocation.value}
-            </p>
-
-            <p>
-                Vehicle:
-                <strong>
-                    ${vehicle.name}
-                </strong>
-            </p>
-
-            <p>
-                Type:
-                ${vehicle.type}
-            </p>
-
-            <p>
-                Price:
-                ₹${vehicle.price} / day
-            </p>
-
-            <p>
-                Rental Days:
-                ${rentalDays}
-            </p>
-
-            <h2>
-                Total Rent:
-                ₹${total}
-            </h2>
-
-        `;
 
     }
 );
