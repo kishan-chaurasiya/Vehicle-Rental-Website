@@ -11,12 +11,13 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Pink logo only for browser tab -->
     <link rel="icon" type="image/png" href="logo.png">
 
 </head>
 
+
 <body>
+
 
     <!-- ================= NAVBAR ================= -->
 
@@ -27,15 +28,23 @@
         </div>
 
         <nav>
+
             <a href="#home">Home</a>
+
             <a href="#vehicles">Vehicles</a>
+
             <a href="#why-us">Why Us</a>
+
             <a href="#contact">Contact</a>
+
         </nav>
 
-        <a href="#booking" class="nav-btn">Book Now</a>
+        <a href="#booking" class="nav-btn">
+            Book Now
+        </a>
 
     </header>
+
 
 
     <!-- ================= HERO SECTION ================= -->
@@ -44,7 +53,9 @@
 
         <div class="hero-content">
 
-            <p class="small-title">PREMIUM VEHICLE RENTAL SERVICE</p>
+            <p class="small-title">
+                PREMIUM VEHICLE RENTAL SERVICE
+            </p>
 
             <h1>
                 Your Journey.<br>
@@ -74,6 +85,7 @@
     </section>
 
 
+
     <!-- ================= SEARCH / BOOKING BOX ================= -->
 
     <section class="booking-section" id="booking">
@@ -82,18 +94,27 @@
 
             <div class="booking-title">
 
-                <p>BOOK YOUR RIDE</p>
+                <p>
+                    BOOK YOUR RIDE
+                </p>
 
-                <h2>Find Your Perfect Vehicle</h2>
+                <h2>
+                    Find Your Perfect Vehicle
+                </h2>
 
             </div>
 
 
             <div class="booking-form">
 
+
+                <!-- PICKUP LOCATION -->
+
                 <div class="input-group">
 
-                    <label>Pickup Location</label>
+                    <label>
+                        Pickup Location
+                    </label>
 
                     <input
                         type="text"
@@ -104,9 +125,14 @@
                 </div>
 
 
+
+                <!-- CUSTOMER NAME -->
+
                 <div class="input-group">
 
-                    <label>Customer Name</label>
+                    <label>
+                        Customer Name
+                    </label>
 
                     <input
                         type="text"
@@ -117,9 +143,14 @@
                 </div>
 
 
+
+                <!-- PHONE -->
+
                 <div class="input-group">
 
-                    <label>Phone Number</label>
+                    <label>
+                        Phone Number
+                    </label>
 
                     <input
                         type="text"
@@ -130,47 +161,128 @@
                 </div>
 
 
+
+                <!-- PICKUP DATE -->
+
                 <div class="input-group">
 
-                    <label>Pickup Date</label>
+                    <label>
+                        Pickup Date
+                    </label>
 
-                    <input type="date">
+                    <input
+                        type="date"
+                        id="pickupDate"
+                    >
 
                 </div>
 
 
+
+                <!-- RETURN DATE -->
+
                 <div class="input-group">
 
-                    <label>Return Date</label>
+                    <label>
+                        Return Date
+                    </label>
 
-                    <input type="date">
+                    <input
+                        type="date"
+                        id="returnDate"
+                    >
 
                 </div>
 
 
-                <button class="search-btn" type="button">
+
+                <!-- SEARCH BUTTON -->
+
+                <button
+                    class="search-btn"
+                    type="button"
+                >
                     Search Vehicle
                 </button>
+
 
             </div>
 
 
+
+            <!-- VEHICLE RESULTS -->
+
             <div id="vehicleResults"></div>
+
 
         </div>
 
     </section>
 
 
+
+    <!-- ================= MY BOOKING ================= -->
+
+    <section class="booking-section my-booking-section">
+
+        <div class="booking-box">
+
+            <div class="booking-title">
+
+                <p>
+                    MY BOOKING
+                </p>
+
+                <h2>
+                    Check Your Booking
+                </h2>
+
+            </div>
+
+
+            <div class="my-booking-form">
+
+                <input
+                    type="text"
+                    id="bookingIdInput"
+                    placeholder="Enter Booking ID"
+                >
+
+                <button
+                    type="button"
+                    id="findBookingBtn"
+                >
+                    Find Booking
+                </button>
+
+            </div>
+
+
+            <div id="bookingLookupResult"></div>
+
+
+        </div>
+
+    </section>
+
+
+
     <!-- ================= VEHICLES ================= -->
 
-    <section class="vehicles-section" id="vehicles">
+    <section
+        class="vehicles-section"
+        id="vehicles"
+    >
 
         <div class="section-heading">
 
-            <p>OUR VEHICLES</p>
+            <p>
+                OUR VEHICLES
+            </p>
 
-            <h2>Choose Your Perfect Ride</h2>
+            <h2>
+                Choose Your Perfect Ride
+            </h2>
 
             <span>
                 Select from our wide range of comfortable
@@ -178,6 +290,7 @@
             </span>
 
         </div>
+
 
 
         <div class="vehicle-container">
@@ -195,9 +308,13 @@
 
                     <div class="vehicle-name">
 
-                        <h3>Maruti Swift</h3>
+                        <h3>
+                            Maruti Swift
+                        </h3>
 
-                        <span>Hatchback • 5 Seats • Petrol</span>
+                        <span>
+                            Hatchback • 5 Seats • Petrol
+                        </span>
 
                     </div>
 
@@ -209,11 +326,21 @@
                     <div class="vehicle-bottom">
 
                         <div class="price">
-                            <strong>₹1,500</strong>
-                            <small>/ day</small>
+
+                            <strong>
+                                ₹1,500
+                            </strong>
+
+                            <small>
+                                / day
+                            </small>
+
                         </div>
 
-                        <a href="#booking" class="book-btn">
+                        <a
+                            href="#booking"
+                            class="book-btn"
+                        >
                             Book Now
                         </a>
 
@@ -222,6 +349,7 @@
                 </div>
 
             </div>
+
 
 
             <!-- VEHICLE 2 -->
@@ -236,9 +364,13 @@
 
                     <div class="vehicle-name">
 
-                        <h3>Hyundai Creta</h3>
+                        <h3>
+                            Hyundai Creta
+                        </h3>
 
-                        <span>SUV • 5 Seats • Petrol</span>
+                        <span>
+                            SUV • 5 Seats • Petrol
+                        </span>
 
                     </div>
 
@@ -250,11 +382,21 @@
                     <div class="vehicle-bottom">
 
                         <div class="price">
-                            <strong>₹2,500</strong>
-                            <small>/ day</small>
+
+                            <strong>
+                                ₹2,500
+                            </strong>
+
+                            <small>
+                                / day
+                            </small>
+
                         </div>
 
-                        <a href="#booking" class="book-btn">
+                        <a
+                            href="#booking"
+                            class="book-btn"
+                        >
                             Book Now
                         </a>
 
@@ -263,6 +405,7 @@
                 </div>
 
             </div>
+
 
 
             <!-- VEHICLE 3 -->
@@ -277,9 +420,13 @@
 
                     <div class="vehicle-name">
 
-                        <h3>Royal Enfield</h3>
+                        <h3>
+                            Royal Enfield
+                        </h3>
 
-                        <span>Motorcycle • 2 Seats • Petrol</span>
+                        <span>
+                            Motorcycle • 2 Seats • Petrol
+                        </span>
 
                     </div>
 
@@ -291,11 +438,21 @@
                     <div class="vehicle-bottom">
 
                         <div class="price">
-                            <strong>₹800</strong>
-                            <small>/ day</small>
+
+                            <strong>
+                                ₹800
+                            </strong>
+
+                            <small>
+                                / day
+                            </small>
+
                         </div>
 
-                        <a href="#booking" class="book-btn">
+                        <a
+                            href="#booking"
+                            class="book-btn"
+                        >
                             Book Now
                         </a>
 
@@ -311,15 +468,23 @@
     </section>
 
 
+
     <!-- ================= WHY CHOOSE US ================= -->
 
-    <section class="why-section" id="why-us">
+    <section
+        class="why-section"
+        id="why-us"
+    >
 
         <div class="section-heading">
 
-            <p>WHY VEHICLE RENTAL?</p>
+            <p>
+                WHY VEHICLE RENTAL?
+            </p>
 
-            <h2>Why Choose Us?</h2>
+            <h2>
+                Why Choose Us?
+            </h2>
 
             <span>
                 We make vehicle rental simple, convenient
@@ -327,6 +492,7 @@
             </span>
 
         </div>
+
 
 
         <div class="features">
@@ -338,7 +504,9 @@
                     🚗
                 </div>
 
-                <h3>Wide Range of Vehicles</h3>
+                <h3>
+                    Wide Range of Vehicles
+                </h3>
 
                 <p>
                     Choose from cars, SUVs and motorcycles
@@ -348,13 +516,16 @@
             </div>
 
 
+
             <div class="feature-card">
 
                 <div class="feature-icon">
                     💰
                 </div>
 
-                <h3>Affordable Prices</h3>
+                <h3>
+                    Affordable Prices
+                </h3>
 
                 <p>
                     Get reliable vehicles at transparent
@@ -364,13 +535,16 @@
             </div>
 
 
+
             <div class="feature-card">
 
                 <div class="feature-icon">
                     ⚡
                 </div>
 
-                <h3>Easy Booking</h3>
+                <h3>
+                    Easy Booking
+                </h3>
 
                 <p>
                     Book your vehicle quickly with our
@@ -380,13 +554,16 @@
             </div>
 
 
+
             <div class="feature-card">
 
                 <div class="feature-icon">
                     ⭐
                 </div>
 
-                <h3>Reliable Service</h3>
+                <h3>
+                    Reliable Service
+                </h3>
 
                 <p>
                     We provide dependable vehicles and
@@ -401,13 +578,16 @@
     </section>
 
 
+
     <!-- ================= CALL TO ACTION ================= -->
 
     <section class="cta">
 
         <div>
 
-            <p>READY FOR YOUR NEXT JOURNEY?</p>
+            <p>
+                READY FOR YOUR NEXT JOURNEY?
+            </p>
 
             <h2>
                 Rent Your Vehicle Today
@@ -419,11 +599,15 @@
 
         </div>
 
-        <a href="#booking" class="cta-btn">
+        <a
+            href="#booking"
+            class="cta-btn"
+        >
             Book Now
         </a>
 
     </section>
+
 
 
     <!-- ================= FOOTER ================= -->
@@ -448,30 +632,56 @@
             </div>
 
 
+
             <div class="footer-links">
 
-                <h3>Quick Links</h3>
+                <h3>
+                    Quick Links
+                </h3>
 
-                <a href="#home">Home</a>
-                <a href="#vehicles">Vehicles</a>
-                <a href="#why-us">Why Us</a>
-                <a href="#booking">Booking</a>
+                <a href="#home">
+                    Home
+                </a>
+
+                <a href="#vehicles">
+                    Vehicles
+                </a>
+
+                <a href="#why-us">
+                    Why Us
+                </a>
+
+                <a href="#booking">
+                    Booking
+                </a>
 
             </div>
 
 
+
             <div class="footer-contact">
 
-                <h3>Contact Us</h3>
+                <h3>
+                    Contact Us
+                </h3>
 
-                <p>📍 Mumbai, India</p>
-                <p>📞 +91 9137741780</p>
-                <p>✉️ kishanchaurasiya413@gmail.com</p>
+                <p>
+                    📍 Mumbai, India
+                </p>
+
+                <p>
+                    📞 +91 9137741780
+                </p>
+
+                <p>
+                    ✉️ kishanchaurasiya413@gmail.com
+                </p>
 
             </div>
 
 
         </div>
+
 
 
         <div class="copyright">
@@ -485,7 +695,11 @@
     </footer>
 
 
+
+    <!-- ================= JAVASCRIPT ================= -->
+
     <script src="script.js"></script>
+
 
 </body>
 
