@@ -3,12 +3,44 @@
 #include <string>
 #include <cstdlib>
 #include <cstring>
+
+#ifdef _WIN32
+
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
+
+using socket_t = SOCKET;
+
+#else
+
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+using socket_t = int;
+
+#define INVALID_SOCKET (-1)
+#define SOCKET_ERROR (-1)
+
+#endif
+
 using namespace std;
+
+
+// ==================================================
+//                  SOCKET CLOSE
+// ==================================================
+
+void closeSocket(socket_t socketValue)
+{
+#ifdef _WIN32
+    closesocket(socketValue);
+#else
+    close(socketValue);
+#endif
+}
 
 
 // ==================================================
@@ -18,7 +50,6 @@ using namespace std;
 class Vehicle
 {
 private:
-
     string name;
     string type;
     double rent;
@@ -32,16 +63,38 @@ public:
         rent = r;
     }
 
+    ~Vehicle()
+    {
+        cout << "Vehicle object destroyed: "
+             << name << endl;
+    }
+
     void showVehicle()
     {
         cout << "Vehicle: " << name << endl;
         cout << "Type: " << type << endl;
-        cout << "Rent: Rs. " << rent << " per day" << endl;
+        cout << "Rent: Rs. " << rent
+             << " per day" << endl;
     }
 
     double calculateRent(int days)
     {
         return rent * days;
+    }
+
+    string getName()
+    {
+        return name;
+    }
+
+    string getType()
+    {
+        return type;
+    }
+
+    double getRent()
+    {
+        return rent;
     }
 };
 
@@ -53,7 +106,6 @@ public:
 class Customer
 {
 private:
-
     string name;
     string phone;
 
@@ -63,6 +115,12 @@ public:
     {
         name = n;
         phone = p;
+    }
+
+    ~Customer()
+    {
+        cout << "Customer object destroyed: "
+             << name << endl;
     }
 
     void showCustomer()
@@ -107,12 +165,10 @@ string urlDecode(string value)
                 i += 2;
             }
         }
-
         else if (value[i] == '+')
         {
             result += ' ';
         }
-
         else
         {
             result += value[i];
@@ -124,19 +180,14 @@ string urlDecode(string value)
 
 
 // ==================================================
-//              GET FORM VALUE
+//                  GET FORM VALUE
 // ==================================================
 
-string getValue(
-    string body,
-    string key
-)
+string getValue(string body, string key)
 {
-    string searchKey =
-        key + "=";
+    string searchKey = key + "=";
 
-    size_t start =
-        body.find(searchKey);
+    size_t start = body.find(searchKey);
 
     if (start == string::npos)
     {
@@ -145,26 +196,107 @@ string getValue(
 
     start += searchKey.length();
 
-    size_t end =
-        body.find("&", start);
+    size_t end = body.find("&", start);
 
     string value;
 
     if (end == string::npos)
     {
-        value =
-            body.substr(start);
+        value = body.substr(start);
     }
     else
     {
-        value =
-            body.substr(
-                start,
-                end - start
-            );
+        value = body.substr(
+            start,
+            end - start
+        );
     }
 
     return urlDecode(value);
+}
+
+
+// ==================================================
+//              RECEIVE COMPLETE REQUEST
+// ==================================================
+
+string receiveRequest(socket_t clientSocket)
+{
+    string request;
+
+    char buffer[4096];
+
+    while (true)
+    {
+        int received =
+            recv(
+                clientSocket,
+                buffer,
+                sizeof(buffer),
+                0
+            );
+
+        if (received <= 0)
+        {
+            break;
+        }
+
+        request.append(buffer, received);
+
+        size_t headerEnd =
+            request.find("\r\n\r\n");
+
+        if (headerEnd != string::npos)
+        {
+            size_t contentLengthPosition =
+                request.find("Content-Length:");
+
+            int contentLength = 0;
+
+            if (contentLengthPosition != string::npos)
+            {
+                size_t valueStart =
+                    contentLengthPosition +
+                    15;
+
+                size_t valueEnd =
+                    request.find(
+                        "\r\n",
+                        valueStart
+                    );
+
+                string lengthText =
+                    request.substr(
+                        valueStart,
+                        valueEnd - valueStart
+                    );
+
+                contentLength =
+                    atoi(
+                        lengthText.c_str()
+                    );
+            }
+
+            size_t bodyStart =
+                headerEnd + 4;
+
+            size_t bodySize =
+                request.size() - bodyStart;
+
+            if (bodySize >=
+                static_cast<size_t>(contentLength))
+            {
+                break;
+            }
+        }
+
+        if (request.length() > 1000000)
+        {
+            break;
+        }
+    }
+
+    return request;
 }
 
 
@@ -173,7 +305,7 @@ string getValue(
 // ==================================================
 
 void sendResponse(
-    int clientSocket,
+    socket_t clientSocket,
     string body,
     string status = "200 OK"
 )
@@ -182,7 +314,7 @@ void sendResponse(
         "HTTP/1.1 " +
         status +
         "\r\n"
-        "Content-Type: text/plain\r\n"
+        "Content-Type: text/plain; charset=UTF-8\r\n"
         "Content-Length: " +
         to_string(body.length()) +
         "\r\n"
@@ -193,7 +325,7 @@ void sendResponse(
     send(
         clientSocket,
         response.c_str(),
-        response.length(),
+        static_cast<int>(response.length()),
         0
     );
 }
@@ -204,7 +336,7 @@ void sendResponse(
 // ==================================================
 
 void sendFile(
-    int clientSocket,
+    socket_t clientSocket,
     string fileName
 )
 {
@@ -236,23 +368,19 @@ void sendFile(
 
     if (fileName == "index.html")
     {
-        contentType =
-            "text/html";
+        contentType = "text/html";
     }
     else if (fileName == "style.css")
     {
-        contentType =
-            "text/css";
+        contentType = "text/css";
     }
     else if (fileName == "script.js")
     {
-        contentType =
-            "application/javascript";
+        contentType = "application/javascript";
     }
     else
     {
-        contentType =
-            "text/plain";
+        contentType = "text/plain";
     }
 
     string response =
@@ -270,14 +398,14 @@ void sendFile(
     send(
         clientSocket,
         response.c_str(),
-        response.length(),
+        static_cast<int>(response.length()),
         0
     );
 }
 
 
 // ==================================================
-//                  MAIN
+//                      MAIN
 // ==================================================
 
 int main()
@@ -319,33 +447,58 @@ int main()
     //                  PORT
     // ==================================================
 
-    int port = 10000;
-
-    char* environmentPort =
+    const char* environmentPort =
         getenv("PORT");
+
+    int port = 8080;
 
     if (environmentPort != nullptr)
     {
-        port =
-            atoi(environmentPort);
+        port = atoi(environmentPort);
     }
 
 
     // ==================================================
-    //                  CREATE SOCKET
+    //              WINDOWS SOCKET STARTUP
     // ==================================================
 
-    int serverSocket =
+#ifdef _WIN32
+
+    WSADATA wsa;
+
+    if (WSAStartup(
+            MAKEWORD(2, 2),
+            &wsa
+        ) != 0)
+    {
+        cerr << "WSAStartup failed."
+             << endl;
+
+        return 1;
+    }
+
+#endif
+
+
+    // ==================================================
+    //              CREATE SOCKET
+    // ==================================================
+
+    socket_t serverSocket =
         socket(
             AF_INET,
             SOCK_STREAM,
             0
         );
 
-    if (serverSocket < 0)
+    if (serverSocket == INVALID_SOCKET)
     {
         cerr << "Socket creation failed."
              << endl;
+
+#ifdef _WIN32
+        WSACleanup();
+#endif
 
         return 1;
     }
@@ -361,7 +514,7 @@ int main()
         serverSocket,
         SOL_SOCKET,
         SO_REUSEADDR,
-        &option,
+        reinterpret_cast<char*>(&option),
         sizeof(option)
     );
 
@@ -389,15 +542,21 @@ int main()
     if (
         bind(
             serverSocket,
-            (sockaddr*)&serverAddress,
+            reinterpret_cast<sockaddr*>(
+                &serverAddress
+            ),
             sizeof(serverAddress)
-        ) < 0
+        ) == SOCKET_ERROR
     )
     {
         cerr << "Bind failed."
              << endl;
 
-        close(serverSocket);
+        closeSocket(serverSocket);
+
+#ifdef _WIN32
+        WSACleanup();
+#endif
 
         return 1;
     }
@@ -411,13 +570,17 @@ int main()
         listen(
             serverSocket,
             10
-        ) < 0
+        ) == SOCKET_ERROR
     )
     {
         cerr << "Listen failed."
              << endl;
 
-        close(serverSocket);
+        closeSocket(serverSocket);
+
+#ifdef _WIN32
+        WSACleanup();
+#endif
 
         return 1;
     }
@@ -433,6 +596,10 @@ int main()
     cout << "Server is ready."
          << endl;
 
+    cout << "Open: http://localhost:"
+         << port
+         << endl;
+
 
     // ==================================================
     //                  SERVER LOOP
@@ -440,14 +607,14 @@ int main()
 
     while (true)
     {
-        int clientSocket =
+        socket_t clientSocket =
             accept(
                 serverSocket,
                 nullptr,
                 nullptr
             );
 
-        if (clientSocket < 0)
+        if (clientSocket == INVALID_SOCKET)
         {
             continue;
         }
@@ -457,25 +624,16 @@ int main()
         //              RECEIVE REQUEST
         // ==================================================
 
-        char buffer[16384] = {0};
-
-        int received =
-            recv(
-                clientSocket,
-                buffer,
-                sizeof(buffer) - 1,
-                0
+        string request =
+            receiveRequest(
+                clientSocket
             );
 
-        if (received <= 0)
+        if (request.empty())
         {
-            close(clientSocket);
+            closeSocket(clientSocket);
             continue;
         }
-
-        buffer[received] = '\0';
-
-        string request(buffer);
 
 
         cout << "\n===== REQUEST RECEIVED ====="
@@ -573,7 +731,7 @@ int main()
                     "days"
                 );
 
-            string total =
+            string clientTotal =
                 getValue(
                     body,
                     "total"
@@ -588,6 +746,60 @@ int main()
                 customerName,
                 customerPhone
             );
+
+
+            // ==================================================
+            //              SELECT VEHICLE
+            // ==================================================
+
+            Vehicle* selectedVehicle =
+                nullptr;
+
+            if (
+                vehicleName ==
+                car.getName()
+            )
+            {
+                selectedVehicle = &car;
+            }
+            else if (
+                vehicleName ==
+                suv.getName()
+            )
+            {
+                selectedVehicle = &suv;
+            }
+            else if (
+                vehicleName ==
+                bike.getName()
+            )
+            {
+                selectedVehicle = &bike;
+            }
+
+
+            // ==================================================
+            //              CALCULATE RENT IN C++
+            // ==================================================
+
+            int rentalDays =
+                atoi(days.c_str());
+
+            if (rentalDays < 1)
+            {
+                rentalDays = 1;
+            }
+
+            double serverTotal = 0;
+
+            if (selectedVehicle != nullptr)
+            {
+                serverTotal =
+                    selectedVehicle->
+                    calculateRent(
+                        rentalDays
+                    );
+            }
 
 
             // ==================================================
@@ -646,11 +858,15 @@ int main()
                  << endl;
 
             cout << "Rental Days: "
-                 << days
+                 << rentalDays
                  << endl;
 
-            cout << "Total Rent: Rs. "
-                 << total
+            cout << "Client Total: Rs. "
+                 << clientTotal
+                 << endl;
+
+            cout << "C++ Calculated Total: Rs. "
+                 << serverTotal
                  << endl;
 
 
@@ -716,12 +932,12 @@ int main()
 
                 bookingFile
                     << "Rental Days: "
-                    << days
+                    << rentalDays
                     << "\n";
 
                 bookingFile
                     << "Total Rent: Rs. "
-                    << total
+                    << serverTotal
                     << "\n";
 
                 bookingFile
@@ -730,6 +946,11 @@ int main()
                 bookingFile.close();
 
                 cout << "\nBooking saved successfully!"
+                     << endl;
+            }
+            else
+            {
+                cout << "\nUnable to save booking file."
                      << endl;
             }
 
@@ -824,7 +1045,9 @@ int main()
             send(
                 clientSocket,
                 response.c_str(),
-                response.length(),
+                static_cast<int>(
+                    response.length()
+                ),
                 0
             );
         }
@@ -844,11 +1067,19 @@ int main()
         }
 
 
-        close(clientSocket);
+        closeSocket(clientSocket);
     }
 
 
-    close(serverSocket);
+    // ==================================================
+    //              CLOSE SERVER
+    // ==================================================
+
+    closeSocket(serverSocket);
+
+#ifdef _WIN32
+    WSACleanup();
+#endif
 
     return 0;
 }
