@@ -1,0 +1,15 @@
+========================================
+             NEW BOOKING
+========================================
+Customer Name: bhima
+Phone: 785978587
+Pickup Location: midc
+Pickup Date: 2026-09-26
+Return Date: 2026-09-30
+Vehicle: Maruti Swift
+Vehicle Type: Hatchback
+Price Per Day: Rs. 1500
+Rental Days: 4
+Total Rent: Rs. 6000
+========================================
+
