@@ -9,6 +9,8 @@
     <title>DriveGo - Vehicle Rental</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <link rel="icon" type="image/png" href="logo.png">
 </head>
 
 <body>
@@ -18,7 +20,7 @@
     <header class="navbar">
 
         <div class="logo">
-            🚗 <span>Drive</span>Go
+            <img src="logo.png" alt="Vehicle Rental Logo">
         </div>
 
         <nav>
@@ -71,82 +73,93 @@
 
     <!-- ================= SEARCH / BOOKING BOX ================= -->
 
-<section class="booking-section" id="booking">
+    <section class="booking-section" id="booking">
 
-    <div class="booking-box">
+        <div class="booking-box">
 
-        <div class="booking-title">
+            <div class="booking-title">
 
-            <p>BOOK YOUR RIDE</p>
+                <p>BOOK YOUR RIDE</p>
 
-            <h2>Find Your Perfect Vehicle</h2>
+                <h2>Find Your Perfect Vehicle</h2>
+
+            </div>
+
+
+            <div class="booking-form">
+
+                <div class="input-group">
+
+                    <label>Pickup Location</label>
+
+                    <input
+                        type="text"
+                        id="pickupLocation"
+                        placeholder="Enter pickup location"
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Customer Name</label>
+
+                    <input
+                        type="text"
+                        id="customerName"
+                        placeholder="Enter your name"
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Phone Number</label>
+
+                    <input
+                        type="text"
+                        id="customerPhone"
+                        placeholder="Enter phone number"
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Pickup Date</label>
+
+                    <input type="date">
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Return Date</label>
+
+                    <input type="date">
+
+                </div>
+
+
+                <button class="search-btn" type="button">
+                    Search Vehicle
+                </button>
+
+            </div>
+
+
+            <!-- Vehicle results MUST be outside booking-form -->
+
+            <div id="vehicleResults"></div>
 
         </div>
 
+    </section>
 
-        <div class="booking-form">
-
-            <div class="input-group">
-
-                <label>Pickup Location</label>
-
-                <input
-    type="text"
-    id="pickupLocation"
-    placeholder="Enter pickup location"
->
-
-            </div>
-            <div class="input-group">
-    <label>Customer Name</label>
-    <input
-        type="text"
-        id="customerName"
-        placeholder="Enter your name"
-    >
-</div>
-
-<div class="input-group">
-    <label>Phone Number</label>
-    <input
-        type="text"
-        id="customerPhone"
-        placeholder="Enter phone number"
-    >
-</div>
-
-            <div class="input-group">
-
-                <label>Pickup Date</label>
-
-                <input type="date">
-
-            </div>
-
-
-            <div class="input-group">
-
-                <label>Return Date</label>
-
-                <input type="date">
-
-            </div>
-
-
-            <button class="search-btn" type="button">
-                Search Vehicle
-            </button>
-
-        </div>
-
-
-        <!-- Vehicle results MUST be outside booking-form -->
-
-        <div id="vehicleResults"></div>
-
-    </div>
-
-</section>
 
     <!-- ================= VEHICLES ================= -->
 
@@ -303,7 +316,7 @@
 
         <div class="section-heading">
 
-            <p>WHY DRIVEGO?</p>
+            <p>WHY VEHICLE RENTAL?</p>
 
             <h2>Why Choose Us?</h2>
 
@@ -422,7 +435,7 @@
             <div class="footer-about">
 
                 <div class="logo footer-logo">
-                    🚗 <span>Drive</span>Go
+                    <img src="logo.png" alt="Vehicle Rental Logo">
                 </div>
 
                 <p>
@@ -463,8 +476,7 @@
         <div class="copyright">
 
             <p>
-                © 2026 DriveGo Vehicle Rental.
-                All Rights Reserved.
+                © 2026 Vehicle Rental. All Rights Reserved.
             </p>
 
         </div>
