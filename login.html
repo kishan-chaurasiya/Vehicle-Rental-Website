@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | DriveGo</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f8faff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            color: #202124;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            background: #ffffff;
+            border: 1px solid #e1e5ed;
+            border-radius: 22px;
+            padding: 42px 40px 32px;
+            box-shadow: 0 8px 30px rgba(40, 60, 100, 0.06);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 14px;
+            background: #e8f0fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1967d2;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .brand-name {
+            font-size: 27px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: #303846;
+        }
+
+        .brand-name span {
+            color: #1967d2;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 27px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #5f6368;
+            margin-bottom: 32px;
+        }
+
+        .input-group {
+            margin-bottom: 21px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #3c4043;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            height: 52px;
+            padding: 0 15px;
+            border: 1px solid #c7cbd1;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+            background: #fff;
+            transition: 0.2s;
+        }
+
+        .input-group input:focus {
+            border: 2px solid #1a73e8;
+            padding-left: 14px;
+        }
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box input {
+            padding-right: 65px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #1967d2;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .forgot {
+            display: inline-block;
+            color: #1967d2;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: -7px;
+            margin-bottom: 25px;
+        }
+
+        .forgot:hover,
+        .create-account:hover,
+        .back-home:hover {
+            text-decoration: underline;
+        }
+
+        .notice {
+            display: none;
+            background: #e8f0fe;
+            color: #174ea6;
+            padding: 11px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .continue-btn {
+            width: 100%;
+            height: 48px;
+            border: none;
+            border-radius: 25px;
+            background: #1967d2;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .continue-btn:hover {
+            background: #1558b0;
+            box-shadow: 0 3px 8px rgba(25, 103, 210, 0.2);
+        }
+
+        .bottom-text {
+            text-align: center;
+            font-size: 13px;
+            color: #5f6368;
+            margin-top: 25px;
+        }
+
+        .create-account {
+            color: #1967d2;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .back-home {
+            display: block;
+            width: fit-content;
+            margin: 22px auto 0;
+            font-size: 13px;
+            color: #5f6368;
+            text-decoration: none;
+        }
+
+        footer {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #777d87;
+            text-align: center;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 14px;
+                background: #fff;
+            }
+
+            .login-card {
+                padding: 32px 22px;
+                border: none;
+                box-shadow: none;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="login-card">
+
+        <div class="brand">
+            <div class="brand-icon">D</div>
+            <div class="brand-name">Drive<span>Go</span></div>
+        </div>
+
+        <h1>Welcome back</h1>
+
+        <p class="subtitle">
+            Sign in to continue to your DriveGo account
+            and explore your next ride.
+        </p>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+                <label for="email">Email address</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    autocomplete="username"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+
+                <div class="password-box">
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        id="togglePassword"
+                    >Show</button>
+                </div>
+            </div>
+
+            <a href="#" class="forgot" id="forgotPassword">
+                Forgot password?
+            </a>
+
+            <div class="notice" id="notice" role="status"></div>
+
+            <button type="submit" class="continue-btn">
+                Sign in
+            </button>
+
+        </form>
+
+        <p class="bottom-text">
+            New to DriveGo?
+            <a href="#" class="create-account" id="createAccount">
+                Create account
+            </a>
+        </p>
+
+        <a href="index.html" class="back-home">
+            ← Back to home
+        </a>
+
+    </main>
+
+    <footer>
+        © 2026 DriveGo · Your journey starts here
+    </footer>
+
+    <script>
+        const loginForm = document.getElementById("loginForm");
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.getElementById("togglePassword");
+        const notice = document.getElementById("notice");
+
+        function showNotice(message) {
+            notice.textContent = message;
+            notice.style.display = "block";
+        }
+
+        togglePassword.addEventListener("click", function () {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePassword.textContent = "Hide";
+            } else {
+                passwordInput.type = "password";
+                togglePassword.textContent = "Show";
+            }
+        });
+
+        loginForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                showNotice("Please enter your email and password.");
+                return;
+            }
+
+            showNotice("Welcome to DriveGo! Opening your home page...");
+
+            setTimeout(function () {
+                window.location.href = "/";
+            }, 700);
+        });
+
+        document.getElementById("forgotPassword").addEventListener("click", function (event) {
+            event.preventDefault();
+            showNotice("Password recovery is not available yet. Please contact the website administrator.");
+        });
+
+        document.getElementById("createAccount").addEventListener("click", function (event) {
+            event.preventDefault();
+            showNotice("Account registration is coming soon.");
+        });
+    </script>
+
+</body>
+</html>

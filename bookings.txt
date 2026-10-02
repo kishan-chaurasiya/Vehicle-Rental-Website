@@ -13,3 +13,48 @@ Rental Days: 4
 Total Rent: Rs. 6000
 ========================================
 
+========================================
+Booking ID: DG-20260926-001
+Status: Confirmed
+Customer Name: g
+Phone: 23
+Pickup Location: rt
+Pickup Date: 2026-09-26
+Return Date: 2026-09-28
+Vehicle: Hyundai Creta
+Vehicle Type: SUV
+Price Per Day: 2500
+Rental Days: 2
+Total Rent: 5000
+========================================
+
+========================================
+Booking ID: DG-20260926-002
+Status: Confirmed
+Customer Name: r
+Phone: 435
+Pickup Location: r
+Pickup Date: 2026-09-26
+Return Date: 2026-09-28
+Vehicle: Hyundai Creta
+Vehicle Type: SUV
+Price Per Day: 2500
+Rental Days: 2
+Total Rent: 5000
+========================================
+
+========================================
+Booking ID: DG-20260927-003
+Status: Cancelled
+Customer Name: kishan
+Phone: 5687574555
+Pickup Location: andheri
+Pickup Date: 2026-09-27
+Return Date: 2026-09-29
+Vehicle: Hyundai Creta
+Vehicle Type: SUV
+Price Per Day: 2500
+Rental Days: 2
+Total Rent: 5000
+========================================
+
